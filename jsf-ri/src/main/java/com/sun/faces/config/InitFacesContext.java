@@ -103,20 +103,20 @@ public class InitFacesContext extends FacesContext {
         getThreadInitContextMap().put(Thread.currentThread(), this);
         getInitContextServletContextMap().put(this, sc);
     }
-    
+
     public void reInitializeExternalContext(ServletContext sc) {
         assert(Util.isUnitTestModeEnabled());
         ec = new ServletContextAdapter(sc);
     }
-    
+
     private static final String INIT_FACES_CONTEXT_ATTR_NAME = RIConstants.FACES_PREFIX + "InitFacesContext";
-    
+
     static InitFacesContext getInstance(ServletContext sc) {
         InitFacesContext result = (InitFacesContext) sc.getAttribute(INIT_FACES_CONTEXT_ATTR_NAME);
         if (null != result) {
             result.callSetCurrentInstance();
         }
-        
+
         return result;
     }
 
@@ -232,7 +232,7 @@ public class InitFacesContext extends FacesContext {
             }
             ec.release();
         }
-        
+
         if (null != attributes) {
             attributes.clear();
             attributes = null;
@@ -262,11 +262,11 @@ public class InitFacesContext extends FacesContext {
     }
 
     public void setELContext(ELContext elContext) {
-        this.elContext = elContext;        
+        this.elContext = elContext;
     }
 
     /**
-     * Clean up entries from the threadInitContext and initContextServletContext maps 
+     * Clean up entries from the threadInitContext and initContextServletContext maps
      * using a ServletContext.  First remove entry(s) with matching ServletContext from
      * initContextSerlvetContext map.  Then remove entries from threadInitContext map
      * where the entry value(s) match the initFacesContext (associated with the ServletContext).
@@ -287,7 +287,7 @@ public class InitFacesContext extends FacesContext {
                     Object thread = entry2.getKey();
                     Object initContextValue = entry2.getValue();
                     if (initContextKey == initContextValue) {
-                        threadInitContext.remove(initContextKey);
+                        threadInitContext.remove(thread);
                     }
                 }
             }
@@ -306,7 +306,7 @@ public class InitFacesContext extends FacesContext {
 
         public void dispatch(String path) throws IOException {
         }
-        
+
         private void release() {
             servletContext = null;
             applicationMap = null;
@@ -347,11 +347,11 @@ public class InitFacesContext extends FacesContext {
             return servletContext;
         }
 
-	public String getContextName() { 
+	public String getContextName() {
 	    return servletContext.getServletContextName();
 	}
 
-	
+
 
         public String getInitParameter(String name) {
             return servletContext.getInitParameter(name);
@@ -525,7 +525,7 @@ public class InitFacesContext extends FacesContext {
 
         @Override
         public String encodePartialActionURL(String url) {
-            return null; 
+            return null;
         }
 
 
